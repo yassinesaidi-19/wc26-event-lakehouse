@@ -1,7 +1,8 @@
 # Databricks notebook source
 #
 # Purpose:
-# - calculate tournament-aware group standings from canonical fact_match
-# - enforce ranking and validation logic per tournament and year
+# - calculate tournament rules and state from canonical Delta tables
+# - write `state_group_standings` and `state_qualification_status`
+# - preserve the current ranking logic and tournament/year isolation rules
 
-print("Skeleton notebook: state engine layer")
+print("Databricks notebook 04_state_engine: write state Delta tables.")

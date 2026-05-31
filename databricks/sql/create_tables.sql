@@ -1,0 +1,23 @@
+-- Tables are expected to be materialized by either:
+-- 1. `scripts/write_delta_tables.py` via Spark `saveAsTable`, or
+-- 2. Databricks notebooks that write DataFrames to Delta.
+--
+-- Example CTAS pattern if you want SQL-managed bootstrap tables:
+--
+-- CREATE TABLE IF NOT EXISTS wc26_lakehouse.event_log.event_log
+-- USING DELTA
+-- AS SELECT * FROM some_staging_view;
+--
+-- Intended Unity Catalog layout:
+-- wc26_lakehouse.event_log.event_log
+-- wc26_lakehouse.canonical.dim_team
+-- wc26_lakehouse.canonical.dim_player
+-- wc26_lakehouse.canonical.fact_match
+-- wc26_lakehouse.canonical.fact_match_event
+-- wc26_lakehouse.state.state_group_standings
+-- wc26_lakehouse.state.state_qualification_status
+-- wc26_lakehouse.marts.mart_group_standings
+-- wc26_lakehouse.marts.mart_match_center
+-- wc26_lakehouse.marts.mart_team_performance
+-- wc26_lakehouse.quality.source_contribution_report
+-- wc26_lakehouse.quality.quality_report

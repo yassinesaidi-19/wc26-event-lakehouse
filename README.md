@@ -62,6 +62,8 @@ Copy-Item .env.example .env
 python run_pipeline.py
 ```
 
+Databricks credentials are not required for local runs or tests.
+
 ## Pipeline Outputs
 
 One successful run writes:
@@ -78,6 +80,37 @@ One successful run writes:
 - `data/processed/marts/mart_team_performance.csv`
 - `data/quality/quality_report.json`
 - `data/quality/source_contribution_report.csv`
+
+## Databricks / Delta Path
+
+The repo now has a Databricks-ready execution path that preserves the local file-based MVP.
+
+Local MVP:
+
+- keeps CSV and JSON outputs under `data/processed/` and `data/quality/`
+
+Databricks version:
+
+- maps those outputs to Delta tables under Unity Catalog
+- uses `configs/databricks.yml` for catalog/schema/table naming
+- uses `scripts/write_delta_tables.py` as the local-to-Delta export entrypoint
+- uses Databricks Workflows and notebook tasks under `databricks/`
+
+Direct mapping:
+
+- `data/processed/event_log/event_log.csv` -> `wc26_lakehouse.event_log.event_log`
+- `data/processed/canonical/*.csv` -> `wc26_lakehouse.canonical.*`
+- `data/processed/state/*.csv` -> `wc26_lakehouse.state.*`
+- `data/processed/marts/*.csv` -> `wc26_lakehouse.marts.*`
+- `data/quality/*.csv|json` -> `wc26_lakehouse.quality.*`
+
+Local-safe Delta write command:
+
+```bash
+python scripts/write_delta_tables.py
+```
+
+If Spark is unavailable, the script exits gracefully with a clear skip message.
 
 ## Live API Normalization
 
