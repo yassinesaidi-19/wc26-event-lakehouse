@@ -42,6 +42,24 @@ The pipeline was executed on Databricks with API-enabled ingestion using Databri
 | `wc26_lakehouse.marts.mart_match_center` | 1,523 |
 | `wc26_lakehouse.quality.source_contribution_report` | 5 |
 
+Source contribution validation:
+
+![Databricks source contribution report part 1](docs/screenshots/databricks_source_contribution_1.png)
+
+![Databricks source contribution report part 2](docs/screenshots/databricks_source_contribution_2.png)
+
+Delta row-count validation:
+
+![Databricks delta count query](docs/screenshots/databricks_delta_counts_query.png)
+
+![Databricks delta count results](docs/screenshots/databricks_delta_counts_results.png)
+
+Unity Catalog and marts preview:
+
+![Databricks catalog schemas](docs/screenshots/databricks_catalog.png)
+
+![Databricks mart match center preview](docs/screenshots/databricks_mart_match_center.png)
+
 ### Streamlit dashboard
 
 The Streamlit dashboard serves tournament analytics, source contribution, standings, match center, team performance, and quality checks from processed project outputs.
