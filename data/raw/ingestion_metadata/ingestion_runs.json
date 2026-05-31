@@ -1,72 +1,72 @@
 [
   {
-    "run_id": "sample_teams-20260531011104516683",
+    "run_id": "sample_teams-20260531031837128757",
     "source_name": "sample_teams",
     "status": "completed",
     "record_count": 4,
     "output_path": "C:\\Users\\IDEPADPRO\\OneDrive\\Desktop\\work\\prj DE\\world-cup-2026-event-lakehouse\\data\\sample\\teams.json",
     "detail": null,
-    "started_at": "2026-05-31T01:11:04.516683+00:00",
-    "completed_at": "2026-05-31T01:11:04.516683+00:00"
+    "started_at": "2026-05-31T03:18:37.128757+00:00",
+    "completed_at": "2026-05-31T03:18:37.128757+00:00"
   },
   {
-    "run_id": "sample_fixtures-20260531011104517684",
+    "run_id": "sample_fixtures-20260531031837128757",
     "source_name": "sample_fixtures",
     "status": "completed",
     "record_count": 3,
     "output_path": "C:\\Users\\IDEPADPRO\\OneDrive\\Desktop\\work\\prj DE\\world-cup-2026-event-lakehouse\\data\\sample\\fixtures.json",
     "detail": null,
-    "started_at": "2026-05-31T01:11:04.517684+00:00",
-    "completed_at": "2026-05-31T01:11:04.517684+00:00"
+    "started_at": "2026-05-31T03:18:37.128757+00:00",
+    "completed_at": "2026-05-31T03:18:37.128757+00:00"
   },
   {
-    "run_id": "sample_match_events-20260531011104529163",
+    "run_id": "sample_match_events-20260531031837144569",
     "source_name": "sample_match_events",
     "status": "completed",
     "record_count": 7,
     "output_path": "C:\\Users\\IDEPADPRO\\OneDrive\\Desktop\\work\\prj DE\\world-cup-2026-event-lakehouse\\data\\sample\\match_events.json",
     "detail": null,
-    "started_at": "2026-05-31T01:11:04.529163+00:00",
-    "completed_at": "2026-05-31T01:11:04.529163+00:00"
+    "started_at": "2026-05-31T03:18:37.144569+00:00",
+    "completed_at": "2026-05-31T03:18:37.144569+00:00"
   },
   {
-    "run_id": "openfootball-20260531011104548902",
+    "run_id": "openfootball-20260531031837157325",
     "source_name": "openfootball",
     "status": "completed",
     "record_count": 152,
     "output_path": null,
     "detail": "37 files discovered",
-    "started_at": "2026-05-31T01:11:04.548902+00:00",
-    "completed_at": "2026-05-31T01:11:04.548902+00:00"
+    "started_at": "2026-05-31T03:18:37.157325+00:00",
+    "completed_at": "2026-05-31T03:18:37.157325+00:00"
   },
   {
-    "run_id": "fjelstul-20260531011104672171",
+    "run_id": "fjelstul-20260531031837277683",
     "source_name": "fjelstul",
     "status": "completed",
     "record_count": 11737,
     "output_path": null,
     "detail": "46 files discovered",
-    "started_at": "2026-05-31T01:11:04.672171+00:00",
-    "completed_at": "2026-05-31T01:11:04.672171+00:00"
+    "started_at": "2026-05-31T03:18:37.277683+00:00",
+    "completed_at": "2026-05-31T03:18:37.277683+00:00"
   },
   {
-    "run_id": "api_football_normalization-20260531011104908699",
+    "run_id": "api_football_normalization-20260531031837525563",
     "source_name": "api_football_normalization",
     "status": "completed",
     "record_count": 96,
     "output_path": null,
     "detail": "errors=0",
-    "started_at": "2026-05-31T01:11:04.908699+00:00",
-    "completed_at": "2026-05-31T01:11:04.908699+00:00"
+    "started_at": "2026-05-31T03:18:37.525563+00:00",
+    "completed_at": "2026-05-31T03:18:37.525563+00:00"
   },
   {
-    "run_id": "football_data_normalization-20260531011104930280",
+    "run_id": "football_data_normalization-20260531031837541686",
     "source_name": "football_data_normalization",
     "status": "completed",
     "record_count": 152,
     "output_path": null,
     "detail": "errors=0",
-    "started_at": "2026-05-31T01:11:04.930280+00:00",
-    "completed_at": "2026-05-31T01:11:04.930280+00:00"
+    "started_at": "2026-05-31T03:18:37.541686+00:00",
+    "completed_at": "2026-05-31T03:18:37.541686+00:00"
   }
 ]
