@@ -27,9 +27,33 @@ class ProcessedPathSet:
     mart_match_center: Path = MARTS_DIR / "mart_match_center.csv"
     mart_team_performance: Path = MARTS_DIR / "mart_team_performance.csv"
     quality_report: Path = QUALITY_DIR / "quality_report.json"
+    source_contribution_report: Path = QUALITY_DIR / "source_contribution_report.csv"
 
 
 PROCESSED_PATHS = ProcessedPathSet()
+
+
+def normalize_int_like_value(value: Any) -> Any:
+    """Convert values like 2006.0 or '2006.0' into integer 2006 for stable comparisons."""
+    if value is None or pd.isna(value):
+        return None
+
+    if isinstance(value, str):
+        stripped = value.strip()
+        if not stripped:
+            return None
+        try:
+            numeric = float(stripped)
+        except ValueError:
+            return stripped
+        if numeric.is_integer():
+            return int(numeric)
+        return stripped
+
+    if isinstance(value, float) and value.is_integer():
+        return int(value)
+
+    return value
 
 
 def _require_path(path: Path) -> Path:
@@ -72,6 +96,10 @@ def load_mart_team_performance() -> pd.DataFrame:
 
 def load_quality_report() -> dict[str, Any]:
     return read_json(_require_path(PROCESSED_PATHS.quality_report))
+
+
+def load_source_contribution_report() -> pd.DataFrame:
+    return read_csv(_require_path(PROCESSED_PATHS.source_contribution_report))
 
 
 def build_serving_summary() -> dict[str, int]:
@@ -122,6 +150,7 @@ def list_tournaments() -> list[dict[str, Any]]:
     grouped = grouped.merge(group_counts, on=["tournament_id", "competition_year"], how="left")
     grouped["groups_present"] = grouped["groups_present"].fillna(0).astype(int)
     grouped = grouped.sort_values(["competition_year", "tournament_id"], ascending=[False, True])
+    grouped["competition_year"] = grouped["competition_year"].map(normalize_int_like_value)
     return grouped.to_dict(orient="records")
 
 
@@ -130,5 +159,7 @@ def filter_frame(frame: pd.DataFrame, filters: dict[str, Any]) -> pd.DataFrame:
     for column, value in filters.items():
         if value is None or column not in filtered.columns:
             continue
-        filtered = filtered[filtered[column].astype(str) == str(value)]
+        normalized_value = normalize_int_like_value(value)
+        normalized_column = filtered[column].map(normalize_int_like_value)
+        filtered = filtered[normalized_column == normalized_value]
     return filtered

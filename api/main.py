@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse
 
 from wc2026.serving import (
     ProcessedOutputsNotReadyError,
@@ -27,8 +28,20 @@ app = FastAPI(
 )
 
 
-def _service_unavailable(exc: ProcessedOutputsNotReadyError) -> HTTPException:
-    return HTTPException(status_code=503, detail=f"{exc}. Run python run_pipeline.py first.")
+def _missing_outputs_detail(exc: ProcessedOutputsNotReadyError) -> str:
+    return f"{exc}. Run python run_pipeline.py first."
+
+
+@app.exception_handler(ProcessedOutputsNotReadyError)
+def processed_outputs_not_ready_handler(
+    _request: Request,
+    exc: ProcessedOutputsNotReadyError,
+) -> JSONResponse:
+    """Return a clean serving error when processed files are not ready yet."""
+    return JSONResponse(
+        status_code=503,
+        content={"detail": _missing_outputs_detail(exc)},
+    )
 
 
 @app.get("/")
@@ -67,19 +80,13 @@ def health() -> dict[str, Any]:
 @app.get("/summary")
 def summary() -> dict[str, int]:
     """Return serving-layer summary counts."""
-    try:
-        return build_serving_summary()
-    except ProcessedOutputsNotReadyError as exc:
-        raise _service_unavailable(exc) from exc
+    return build_serving_summary()
 
 
 @app.get("/tournaments")
 def tournaments() -> list[dict[str, Any]]:
     """Return tournament catalog entries from canonical matches."""
-    try:
-        return list_tournaments()
-    except ProcessedOutputsNotReadyError as exc:
-        raise _service_unavailable(exc) from exc
+    return list_tournaments()
 
 
 @app.get("/standings")
@@ -90,10 +97,7 @@ def standings(
     team_id: str | None = None,
 ) -> list[dict[str, Any]]:
     """Return filtered standings rows."""
-    try:
-        frame = load_state_group_standings()
-    except ProcessedOutputsNotReadyError as exc:
-        raise _service_unavailable(exc) from exc
+    frame = load_state_group_standings()
     filtered = filter_frame(
         frame,
         {
@@ -126,10 +130,7 @@ def matches(
     source_name: str | None = None,
 ) -> list[dict[str, Any]]:
     """Return filtered match-center rows."""
-    try:
-        frame = load_mart_match_center()
-    except ProcessedOutputsNotReadyError as exc:
-        raise _service_unavailable(exc) from exc
+    frame = load_mart_match_center()
 
     filtered = filter_frame(
         frame,
@@ -167,11 +168,8 @@ def teams(
     team_id: str | None = None,
 ) -> list[dict[str, Any]]:
     """Return tournament-aware team performance rows joined with team metadata."""
-    try:
-        performance = load_mart_team_performance()
-        dim_team = load_dim_team()
-    except ProcessedOutputsNotReadyError as exc:
-        raise _service_unavailable(exc) from exc
+    performance = load_mart_team_performance()
+    dim_team = load_dim_team()
 
     filtered = filter_frame(
         performance,
@@ -192,12 +190,9 @@ def teams(
 @app.get("/teams/{team_id}")
 def team_detail(team_id: str) -> dict[str, Any]:
     """Return team metadata plus tournament performance rows."""
-    try:
-        dim_team = load_dim_team()
-        performance = load_mart_team_performance()
-        matches_frame = load_fact_match()
-    except ProcessedOutputsNotReadyError as exc:
-        raise _service_unavailable(exc) from exc
+    dim_team = load_dim_team()
+    performance = load_mart_team_performance()
+    matches_frame = load_fact_match()
 
     team_rows = dim_team[dim_team["team_id"].astype(str) == str(team_id)]
     if team_rows.empty:
@@ -221,7 +216,4 @@ def team_detail(team_id: str) -> dict[str, Any]:
 @app.get("/quality")
 def quality() -> dict[str, Any]:
     """Return the persisted quality report."""
-    try:
-        return load_quality_report()
-    except ProcessedOutputsNotReadyError as exc:
-        raise _service_unavailable(exc) from exc
+    return load_quality_report()

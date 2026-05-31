@@ -102,10 +102,19 @@ class PipelineTestCase(unittest.TestCase):
         tournaments_response = request(module.app, "/tournaments")
         self.assertEqual(tournaments_response.status_code, 200)
         self.assertGreaterEqual(len(tournaments_response.json()), 2)
+        self.assertIsInstance(tournaments_response.json()[0]["competition_year"], int)
 
         standings_response = request(module.app, "/standings", params={"tournament_id": "SAMPLE-WC-2026", "group_id": "A"})
         self.assertEqual(standings_response.status_code, 200)
         self.assertEqual(len(standings_response.json()), 4)
+
+        standings_by_year_response = request(
+            module.app,
+            "/standings",
+            params={"tournament_id": "SAMPLE-WC-2026", "competition_year": 2026, "group_id": "A"},
+        )
+        self.assertEqual(standings_by_year_response.status_code, 200)
+        self.assertEqual(len(standings_by_year_response.json()), 4)
 
         matches_response = request(module.app, "/matches", params={"tournament_id": "SAMPLE-WC-2026"})
         self.assertEqual(matches_response.status_code, 200)

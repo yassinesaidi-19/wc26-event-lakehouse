@@ -100,3 +100,17 @@ The current implementation is a pragmatic migration step, not a full Databricks 
 3. store secrets in Databricks secret scopes
 4. use Delta Lake as the primary durable analytical table layer
 5. use Databricks SQL for warehouse-native serving
+
+## Verified Databricks execution
+
+Databricks execution was verified with API-enabled ingestion using Databricks secrets. The pipeline writes Delta tables under Unity Catalog and integrates five sources: API-Football, football-data.org, Fjelstul World Cup Database, openfootball, and local sample data.
+
+Verified Delta row counts:
+
+| Table | Rows |
+|---|---:|
+| `wc26_lakehouse.event_log.event_log` | 13,399 |
+| `wc26_lakehouse.canonical.fact_match` | 1,523 |
+| `wc26_lakehouse.state.state_group_standings` | 656 |
+| `wc26_lakehouse.marts.mart_match_center` | 1,523 |
+| `wc26_lakehouse.quality.source_contribution_report` | 5 |

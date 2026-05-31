@@ -20,7 +20,53 @@ External Sources
 -> Serving Layer
 ```
 
+End-to-end architecture diagram:
+
+![WC26 end-to-end architecture](docs/screenshots/architecture_diagram.png)
+
 This is not just a raw-ingestion project. Each layer writes real outputs.
+
+## Execution proof
+
+This project has been executed locally and on Databricks.
+
+### Databricks Delta execution
+
+The pipeline was executed on Databricks with API-enabled ingestion using Databricks secrets. Delta tables were written under Unity Catalog and validated through SQL row-count checks.
+
+| Delta table | Rows |
+|---|---:|
+| `wc26_lakehouse.event_log.event_log` | 13,399 |
+| `wc26_lakehouse.canonical.fact_match` | 1,523 |
+| `wc26_lakehouse.state.state_group_standings` | 656 |
+| `wc26_lakehouse.marts.mart_match_center` | 1,523 |
+| `wc26_lakehouse.quality.source_contribution_report` | 5 |
+
+### Streamlit dashboard
+
+The Streamlit dashboard serves tournament analytics, source contribution, standings, match center, team performance, and quality checks from processed project outputs.
+
+```powershell
+.\scripts\run_dashboard.ps1
+```
+
+![Streamlit overview](docs/screenshots/streamlit_overview.png)
+
+![Streamlit group standings](docs/screenshots/streamlit_group_standings.png)
+
+![Streamlit quality](docs/screenshots/streamlit_quality.png)
+
+### FastAPI serving layer
+
+The FastAPI app exposes health, summary, tournament, standings, match, team, and quality endpoints over the processed serving outputs, with Swagger docs available for interactive exploration.
+
+```powershell
+.\scripts\run_api.ps1
+```
+
+![FastAPI docs](docs/screenshots/fastapi_docs.png)
+
+![FastAPI summary](docs/screenshots/fastapi_summary.png)
 
 ## Data Sources
 
@@ -63,6 +109,41 @@ python run_pipeline.py
 ```
 
 Databricks credentials are not required for local runs or tests.
+
+## Local Serving
+
+Windows setup:
+
+```powershell
+.\scripts\setup_windows.ps1
+```
+
+Run dashboard:
+
+```powershell
+.\scripts\run_dashboard.ps1
+```
+
+Run API:
+
+```powershell
+.\scripts\run_api.ps1
+```
+
+Manual equivalents:
+
+```bash
+python -m streamlit run dashboard/streamlit_app.py
+python -m uvicorn api.main:app --reload
+```
+
+Using `python -m streamlit` avoids Windows PATH issues when the `streamlit` command is not available globally.
+
+URLs:
+
+- Streamlit: `http://localhost:8501`
+- FastAPI docs: `http://127.0.0.1:8000/docs`
+- FastAPI summary: `http://127.0.0.1:8000/summary`
 
 ## Pipeline Outputs
 
@@ -131,31 +212,7 @@ Important caveats:
 - official 2026 competition identifiers may need updating later
 - no fake 2026 data is generated when APIs are empty
 
-## Dashboard
-
-Start the dashboard with:
-
-```bash
-streamlit run dashboard/streamlit_app.py
-```
-
-Sections:
-
-- Project Overview
-- Tournament Summary
-- Group Standings
-- Match Center
-- Team Performance
-- Data Quality Report
-- Architecture Explanation
-
 ## API
-
-Start the API with:
-
-```bash
-uvicorn api.main:app --reload
-```
 
 Endpoints:
 
