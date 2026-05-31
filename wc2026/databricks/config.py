@@ -23,7 +23,6 @@ REQUIRED_TABLE_KEYS = {
     "mart_match_center",
     "mart_team_performance",
     "source_contribution_report",
-    "quality_report",
 }
 
 
