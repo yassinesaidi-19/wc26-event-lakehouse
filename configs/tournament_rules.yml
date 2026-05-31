@@ -1,0 +1,15 @@
+tournament:
+  name: FIFA World Cup 2026
+  number_of_teams: 48
+  number_of_groups: 12
+  teams_per_group: 4
+  points_for_win: 3
+  points_for_draw: 1
+  points_for_loss: 0
+
+ranking_rules:
+  - points
+  - goal_difference
+  - goals_for
+  - head_to_head_points
+  - fair_play_points

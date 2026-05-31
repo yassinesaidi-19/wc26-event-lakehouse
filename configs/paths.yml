@@ -1,0 +1,12 @@
+paths:
+  external_openfootball: data/external/openfootball/worldcup.json-master
+  external_fjelstul: data/external/fjelstul/worldcup-master
+  sample: data/sample
+  raw_api_football: data/raw/api_football
+  raw_football_data: data/raw/football_data
+  raw_ingestion_metadata: data/raw/ingestion_metadata
+  processed_event_log: data/processed/event_log
+  processed_canonical: data/processed/canonical
+  processed_state: data/processed/state
+  processed_marts: data/processed/marts
+  quality: data/quality

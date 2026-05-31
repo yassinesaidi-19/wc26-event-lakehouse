@@ -1,0 +1,23 @@
+sources:
+  sample:
+    fixtures_path: data/sample/fixtures.json
+    teams_path: data/sample/teams.json
+    match_events_path: data/sample/match_events.json
+
+  openfootball:
+    root_path: data/external/openfootball/worldcup.json-master
+    enabled: true
+
+  fjelstul:
+    root_path: data/external/fjelstul/worldcup-master
+    enabled: true
+
+  api_football:
+    base_url: https://v3.football.api-sports.io
+    enabled: true
+    rate_limit_note: "100 calls per day"
+
+  football_data:
+    base_url: https://api.football-data.org/v4
+    enabled: true
+    rate_limit_note: "10 calls per minute"

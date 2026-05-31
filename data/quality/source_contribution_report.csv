@@ -1,0 +1,6 @@
+source_name,teams_count,matches_count,match_events_count,finished_matches_count,scheduled_matches_count,live_matches_count,event_log_count
+api_football,32,64,64,64,0,0,96
+fjelstul,88,1248,1248,1248,0,0,12985
+football_data,48,104,0,0,104,0,152
+openfootball,45,104,0,0,104,0,152
+sample,4,3,7,1,2,0,14

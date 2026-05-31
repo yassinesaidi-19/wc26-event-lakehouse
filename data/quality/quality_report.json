@@ -1,0 +1,133 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "check_name": "required_columns_event_log",
+      "passed": true,
+      "detail": "passed"
+    },
+    {
+      "check_name": "required_columns_dim_team",
+      "passed": true,
+      "detail": "passed"
+    },
+    {
+      "check_name": "required_columns_fact_match",
+      "passed": true,
+      "detail": "passed"
+    },
+    {
+      "check_name": "required_columns_fact_match_event",
+      "passed": true,
+      "detail": "passed"
+    },
+    {
+      "check_name": "required_columns_source_contribution_report",
+      "passed": true,
+      "detail": "passed"
+    },
+    {
+      "check_name": "required_columns_state_group_standings",
+      "passed": true,
+      "detail": "passed"
+    },
+    {
+      "check_name": "event_id_unique",
+      "passed": true,
+      "detail": "event_log.event_id values are unique"
+    },
+    {
+      "check_name": "event_type_valid",
+      "passed": true,
+      "detail": "All event types are valid"
+    },
+    {
+      "check_name": "match_id_present_for_match_events",
+      "passed": true,
+      "detail": "fact_match_event.match_id populated for match events"
+    },
+    {
+      "check_name": "team_id_exists_when_needed",
+      "passed": true,
+      "detail": "All event team IDs exist in dim_team"
+    },
+    {
+      "check_name": "match_has_two_different_teams",
+      "passed": true,
+      "detail": "All matches have two different teams when both teams are known"
+    },
+    {
+      "check_name": "scores_non_negative",
+      "passed": true,
+      "detail": "All populated scores are non-negative"
+    },
+    {
+      "check_name": "points_formula_correct",
+      "passed": true,
+      "detail": "Points match wins * 3 + draws"
+    },
+    {
+      "check_name": "goal_difference_correct",
+      "passed": true,
+      "detail": "Goal difference matches goals_for - goals_against"
+    },
+    {
+      "check_name": "finished_group_match_contributes_two_team_rows",
+      "passed": true,
+      "detail": "Every finished group-stage match contributes two standings team rows"
+    },
+    {
+      "check_name": "group_not_mixed_across_tournament_years",
+      "passed": true,
+      "detail": "No group mixes teams from different tournament years"
+    },
+    {
+      "check_name": "api_matches_have_source_name",
+      "passed": true,
+      "detail": "API normalized matches have source_name"
+    },
+    {
+      "check_name": "api_matches_have_source_entity_id",
+      "passed": true,
+      "detail": "API normalized matches have source_entity_id"
+    },
+    {
+      "check_name": "api_matches_have_canonical_status",
+      "passed": true,
+      "detail": "API normalized matches have canonical statuses"
+    },
+    {
+      "check_name": "api_finished_matches_have_non_negative_scores",
+      "passed": true,
+      "detail": "Finished API matches have non-negative scores when scores exist"
+    },
+    {
+      "check_name": "api_team_ids_are_source_prefixed",
+      "passed": true,
+      "detail": "API team IDs are source-prefixed"
+    },
+    {
+      "check_name": "api_match_ids_are_source_prefixed",
+      "passed": true,
+      "detail": "API match IDs are source-prefixed"
+    },
+    {
+      "check_name": "api_normalization_did_not_fail_pipeline",
+      "passed": true,
+      "detail": "API payload parsing did not stop the pipeline"
+    }
+  ],
+  "summary": {
+    "total_checks": 23,
+    "passed_checks": 23,
+    "failed_checks": 0
+  },
+  "row_counts": {
+    "event_log": 13399,
+    "dim_team": 217,
+    "fact_match": 1523,
+    "fact_match_event": 1319,
+    "state_group_standings": 656,
+    "source_contribution_report": 5
+  }
+}

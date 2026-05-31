@@ -1,0 +1,38 @@
+[
+  {
+    "team_id": "MEX",
+    "team_name": "Mexico",
+    "country_code": "MX",
+    "confederation": "CONCACAF",
+    "group_id": "A",
+    "is_host": true,
+    "source_timestamp": "2026-06-01T08:00:00Z"
+  },
+  {
+    "team_id": "CAN",
+    "team_name": "Canada",
+    "country_code": "CA",
+    "confederation": "CONCACAF",
+    "group_id": "A",
+    "is_host": true,
+    "source_timestamp": "2026-06-01T08:00:00Z"
+  },
+  {
+    "team_id": "USA",
+    "team_name": "United States",
+    "country_code": "US",
+    "confederation": "CONCACAF",
+    "group_id": "A",
+    "is_host": true,
+    "source_timestamp": "2026-06-01T08:00:00Z"
+  },
+  {
+    "team_id": "CRC",
+    "team_name": "Costa Rica",
+    "country_code": "CR",
+    "confederation": "CONCACAF",
+    "group_id": "A",
+    "is_host": false,
+    "source_timestamp": "2026-06-01T08:00:00Z"
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "match_id": "A001",
+    "home_team_id": "MEX",
+    "away_team_id": "CAN",
+    "stadium": "Estadio Azteca",
+    "host_city": "Mexico City",
+    "stage": "GROUP",
+    "group_id": "A",
+    "match_date": "2026-06-11T19:00:00Z",
+    "status": "SCHEDULED",
+    "source_timestamp": "2026-06-02T09:00:00Z"
+  },
+  {
+    "match_id": "A002",
+    "home_team_id": "USA",
+    "away_team_id": "CRC",
+    "stadium": "SoFi Stadium",
+    "host_city": "Los Angeles",
+    "stage": "GROUP",
+    "group_id": "A",
+    "match_date": "2026-06-12T21:00:00Z",
+    "status": "SCHEDULED",
+    "source_timestamp": "2026-06-02T09:00:00Z"
+  },
+  {
+    "match_id": "A003",
+    "home_team_id": "CAN",
+    "away_team_id": "USA",
+    "stadium": "BMO Field",
+    "host_city": "Toronto",
+    "stage": "GROUP",
+    "group_id": "A",
+    "match_date": "2026-06-16T20:00:00Z",
+    "status": "SCHEDULED",
+    "source_timestamp": "2026-06-02T09:00:00Z"
+  }
+]
