@@ -1,94 +1,102 @@
-# Databricks Migration Readiness
+# Databricks Migration
 
 ## Goal
 
-The local project is intentionally structured so it can migrate to Databricks without redesigning the conceptual architecture.
+The local MVP stays file-based and fully runnable without cloud credentials. The Databricks path is additive: it maps the already verified processed outputs into Unity Catalog Delta tables and defines a Databricks Workflow structure around them.
 
-## Mapping The Local Layers
+## Two Execution Modes
 
-```text
-Local source files and APIs
--> Databricks ingestion notebooks or Jobs tasks
--> Bronze raw storage
--> Event-log normalization
--> Silver canonical model tables
--> Gold state and marts tables
--> Databricks SQL, API services, or dashboards
-```
+### Local MVP
 
-## Suggested Databricks Mapping
+Writes durable local outputs as CSV and JSON:
 
-### Raw / Bronze
+- `data/processed/event_log/event_log.csv`
+- `data/processed/canonical/*.csv`
+- `data/processed/state/*.csv`
+- `data/processed/marts/*.csv`
+- `data/quality/quality_report.json`
+- `data/quality/source_contribution_report.csv`
 
-Map the current raw layer into Delta tables or cloud object storage paths such as:
+### Databricks Version
 
-- `bronze.api_football_raw`
-- `bronze.football_data_raw`
-- `bronze.sample_source_snapshots`
-- `bronze.public_source_snapshots`
+Writes equivalent outputs as Delta tables under Unity Catalog:
 
-### Event Log / Silver Entry Point
+- `wc26_lakehouse.event_log.event_log`
+- `wc26_lakehouse.canonical.dim_team`
+- `wc26_lakehouse.canonical.dim_player`
+- `wc26_lakehouse.canonical.fact_match`
+- `wc26_lakehouse.canonical.fact_match_event`
+- `wc26_lakehouse.state.state_group_standings`
+- `wc26_lakehouse.state.state_qualification_status`
+- `wc26_lakehouse.marts.mart_group_standings`
+- `wc26_lakehouse.marts.mart_match_center`
+- `wc26_lakehouse.marts.mart_team_performance`
+- `wc26_lakehouse.quality.source_contribution_report`
+- `wc26_lakehouse.quality.quality_report`
 
-The current `event_log.csv` is a good candidate for:
+## Direct Mapping
 
-- `silver.tournament_event_log`
+- `data/processed/event_log` -> `wc26_lakehouse.event_log.event_log`
+- `data/processed/canonical` -> `wc26_lakehouse.canonical.*`
+- `data/processed/state` -> `wc26_lakehouse.state.*`
+- `data/processed/marts` -> `wc26_lakehouse.marts.*`
+- `data/quality` -> `wc26_lakehouse.quality.*`
 
-This is the replayable, immutable layer that should sit between raw ingestion and curated tables.
+## Local-Safe Delta Writer
 
-### Canonical Model / Silver
+The repo now includes:
 
-The canonical outputs map naturally to:
+- `configs/databricks.yml`
+- `wc2026/databricks/config.py`
+- `wc2026/databricks/table_names.py`
+- `wc2026/databricks/delta_writer.py`
+- `scripts/write_delta_tables.py`
 
-- `silver.dim_team`
-- `silver.dim_player`
-- `silver.fact_match`
-- `silver.fact_match_event`
+Behavior:
 
-### State Engine / Gold
+- loads Databricks catalog/schema/table configuration
+- detects whether Spark is available
+- exits gracefully when Spark is unavailable
+- performs overwrite-mode MVP Delta writes when Spark is available
 
-Tournament logic should run from canonical match facts and write:
+This means Databricks credentials are not required for local tests.
 
-- `gold.state_group_standings`
-- `gold.state_qualification_status`
+## Workflow Structure
 
-### Marts / Gold
+Databricks Workflows orchestrate the notebooks in this order:
 
-Analytics marts map naturally to:
+1. `01_ingestion`
+2. `02_event_log`
+3. `03_canonical_model`
+4. `04_state_engine`
+5. `05_marts_quality`
+6. `06_serving_tables`
 
-- `gold.mart_group_standings`
-- `gold.mart_match_center`
-- `gold.mart_team_performance`
+The bundle and workflow definitions live in:
 
-## Why The Current Local Design Helps
-
-The local repo already separates:
-
-- source ingestion
-- event normalization
-- canonical modeling
-- tournament rule execution
-- analytics marts
-- serving
-
-That means the migration is mostly about execution environment, storage format, and orchestration, not about rethinking the data model from scratch.
-
-## Recommended Migration Steps
-
-1. Replace local CSV outputs with Delta tables.
-2. Convert the current pipeline stages into Databricks notebooks or Python tasks.
-3. Store secrets in Databricks secret scopes instead of `.env`.
-4. Schedule the stages with Databricks Workflows.
-5. Add Unity Catalog naming and access controls.
-6. Replace file-based serving with Databricks SQL or a downstream service layer.
-
-## Current Skeleton
-
-See the `databricks/` directory for a first-cut structure:
-
-- `databricks/README.md`
+- `databricks/bundle.yml`
 - `databricks/jobs/world_cup_pipeline_job.yml`
-- `databricks/notebooks/01_ingestion.py`
-- `databricks/notebooks/02_event_log.py`
-- `databricks/notebooks/03_canonical_model.py`
-- `databricks/notebooks/04_state_engine.py`
-- `databricks/notebooks/05_marts_quality.py`
+
+## SQL Layer
+
+The SQL scaffolding lives under `databricks/sql/`:
+
+- `create_schemas.sql`
+- `create_tables.sql`
+- `quality_views.sql`
+
+These files document the intended Unity Catalog layout and basic warehouse-facing views for:
+
+- latest quality status
+- source contribution summary
+- tournament summary
+
+## Future Direction
+
+The current implementation is a pragmatic migration step, not a full Databricks deployment. The next realistic upgrades would be:
+
+1. replace local raw landing with cloud object storage and Auto Loader
+2. run the existing pipeline stages inside Databricks notebooks or Python tasks
+3. store secrets in Databricks secret scopes
+4. use Delta Lake as the primary durable analytical table layer
+5. use Databricks SQL for warehouse-native serving

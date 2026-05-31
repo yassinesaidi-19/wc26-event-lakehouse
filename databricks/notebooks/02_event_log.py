@@ -1,7 +1,9 @@
 # Databricks notebook source
 #
 # Purpose:
-# - normalize bronze source records into the immutable event log
-# - write the result to a Delta-backed silver table
+# - build the immutable tournament event log from the normalized source layer
+# - write `data/processed/event_log/event_log.csv` equivalent records into
+#   `wc26_lakehouse.event_log.event_log`
+# - keep the event-log semantics unchanged while Delta replaces CSV as the durable table layer
 
-print("Skeleton notebook: event log layer")
+print("Databricks notebook 02_event_log: write event log Delta table.")

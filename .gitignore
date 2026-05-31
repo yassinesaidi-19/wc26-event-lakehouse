@@ -5,6 +5,9 @@ __pycache__/
 .mypy_cache/
 .venv/
 venv/
+.databrickscfg
+.databricks/
+*.dbc
 .ipynb_checkpoints/
 .env
 *.env

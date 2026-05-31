@@ -1,0 +1,16 @@
+bundle:
+  name: world-cup-2026-event-lakehouse
+
+include:
+  - jobs/*.yml
+
+variables:
+  existing_cluster_id:
+    description: Editable placeholder for the Databricks cluster that should run the workflow tasks.
+    default: CHANGE_ME_CLUSTER_ID
+
+targets:
+  dev:
+    default: true
+    workspace:
+      root_path: /Workspace/Users/${workspace.current_user.userName}/world-cup-2026-event-lakehouse

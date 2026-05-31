@@ -1,0 +1,20 @@
+catalog: wc26_lakehouse
+schemas:
+  event_log: event_log
+  canonical: canonical
+  state: state
+  marts: marts
+  quality: quality
+tables:
+  event_log: event_log
+  dim_team: dim_team
+  dim_player: dim_player
+  fact_match: fact_match
+  fact_match_event: fact_match_event
+  state_group_standings: state_group_standings
+  state_qualification_status: state_qualification_status
+  mart_group_standings: mart_group_standings
+  mart_match_center: mart_match_center
+  mart_team_performance: mart_team_performance
+  source_contribution_report: source_contribution_report
+  quality_report: quality_report

@@ -1,29 +1,40 @@
 resources:
   jobs:
     world_cup_pipeline_job:
-      name: world-cup-pipeline
-      description: Tournament lakehouse pipeline skeleton for Databricks Workflows.
+      name: world-cup-2026-pipeline
+      description: Databricks Workflow for the tournament lakehouse Delta execution path.
       tasks:
-        - task_key: ingestion
+        - task_key: 01_ingestion
           notebook_task:
             notebook_path: /Repos/world-cup-2026-event-lakehouse/databricks/notebooks/01_ingestion
-        - task_key: event_log
+          existing_cluster_id: ${var.existing_cluster_id}
+        - task_key: 02_event_log
           depends_on:
-            - task_key: ingestion
+            - task_key: 01_ingestion
           notebook_task:
             notebook_path: /Repos/world-cup-2026-event-lakehouse/databricks/notebooks/02_event_log
-        - task_key: canonical_model
+          existing_cluster_id: ${var.existing_cluster_id}
+        - task_key: 03_canonical_model
           depends_on:
-            - task_key: event_log
+            - task_key: 02_event_log
           notebook_task:
             notebook_path: /Repos/world-cup-2026-event-lakehouse/databricks/notebooks/03_canonical_model
-        - task_key: state_engine
+          existing_cluster_id: ${var.existing_cluster_id}
+        - task_key: 04_state_engine
           depends_on:
-            - task_key: canonical_model
+            - task_key: 03_canonical_model
           notebook_task:
             notebook_path: /Repos/world-cup-2026-event-lakehouse/databricks/notebooks/04_state_engine
-        - task_key: marts_quality
+          existing_cluster_id: ${var.existing_cluster_id}
+        - task_key: 05_marts_quality
           depends_on:
-            - task_key: state_engine
+            - task_key: 04_state_engine
           notebook_task:
             notebook_path: /Repos/world-cup-2026-event-lakehouse/databricks/notebooks/05_marts_quality
+          existing_cluster_id: ${var.existing_cluster_id}
+        - task_key: 06_serving_tables
+          depends_on:
+            - task_key: 05_marts_quality
+          notebook_task:
+            notebook_path: /Repos/world-cup-2026-event-lakehouse/databricks/notebooks/06_serving_tables
+          existing_cluster_id: ${var.existing_cluster_id}
